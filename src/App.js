@@ -1,22 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Post from "./Post";
+import { db } from "./firebase";
 
 function App() {
-  const [posts, setPosts] = useState([
-    {
-      username: "Bruna Sousa",
-      caption: "WoW it works",
-      imageUrl:
-        "https://www.freecodecamp.org/news/content/images/size/w2000/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png",
-    },
-    {
-      username: "Bruna Sousa",
-      caption: "WoW it works",
-      imageUrl:
-        "https://www.freecodecamp.org/news/content/images/size/w2000/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    db.collection("posts").onSnapshot((snapshot) => {
+      setPosts(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -29,17 +23,13 @@ function App() {
       </div>
       <h1>Hello World</h1>
 
-      <Post
-        username="Bruna Sousa"
-        caption="WoW it works"
-        imageUrl="https://www.freecodecamp.org/news/content/images/size/w2000/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png"
-      />
-      <Post
-        username="David Fortes"
-        caption="Seguimos firmes"
-        imageUrl="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/bernese-mountain-dog-royalty-free-image-1581013857.jpg?crop=0.87845xw:1xh;center,top&resize=980:*"
-      />
-      <Post username="Nicole Dias" caption="Mais um dia na piscina" />
+      {posts.map((post) => (
+        <Post
+          username={post.username}
+          caption={post.caption}
+          imageUrl={post.imageUrl}
+        />
+      ))}
     </div>
   );
 }
