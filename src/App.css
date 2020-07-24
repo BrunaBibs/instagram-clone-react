@@ -17,12 +17,16 @@
 }
 
 .app__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background-color: white;
   object-fit: contain;
-  padding: 20px;
+  padding: 0 20px;
   border-bottom: 1px solid lightgray;
   display: flex;
   justify-content: space-between;
+  height: 54px;
 }
 
 .app__headerImage {
@@ -32,4 +36,8 @@
 .app__signup {
   display: flex;
   flex-direction: column;
+}
+
+.app__loginContainer {
+  display: flex;
 }
